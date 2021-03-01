@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import {fbAddTask, fbGetTasks, fbUpdateTask} from '../services/firebase';
+import {fbAddTask, fbGetTasks, fbUpdateTask, fbSnapshot} from '../services/firebase';
 
 
 const TaskContext = createContext();
@@ -11,23 +11,19 @@ export const TaskProvider = ({ children }) => {
   async function getTasks() {
     await fbGetTasks().then(response => {
       setTasks(response);
-    })
+    });
   };
 
   async function addTask(task) {
     await fbAddTask(task).then(response => {
-      // todo
-      // instert task into state rather than making new call
-      getTasks();
-    })
+      //todo add new task to tatks array
+    });
   }
 
   async function updateTask(task) {
     await fbUpdateTask(task).then(() => {
-      // todo
-      // update task in state rather than making new call
-      getTasks();
-    })
+      //todo update the local task
+    });
   };
 
   return (

@@ -12,20 +12,16 @@ function TaskList() {
   };
 
   const saveTask = () => {
-    addTask(task)
+    addTask(task).then(() => cancelTask(/*complete the cancel task todo*/))
   };
 
   const cancelTask = () => {
-    setNewTask(false);
-    setTask({category: '', name: '', completed: false});
+    //todo reset the task state and hide the form
   };
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setTask(prevState => ({
-        ...prevState,
-        [name]: value
-    }));
+    //todo update the task state with these variables
   };
 
   return (

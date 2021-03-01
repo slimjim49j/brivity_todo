@@ -12,7 +12,7 @@ var db = firebase.firestore();
 export const fbAddTask = async (task) => {
   return new Promise(function (resolve, reject) {
     db.collection("tasks").add(task).then(docRef => {
-      resolve(docRef);
+      resolve(docRef.id);
     });
   });
 };
