@@ -16,13 +16,13 @@ export const TaskProvider = ({ children }) => {
 
   async function addTask(task) {
     await fbAddTask(task).then(response => {
-      //todo add new task to tasks array
+      //todo: add the new task you just created to the tasks state
     });
   }
 
   async function updateTask(task) {
     await fbUpdateTask(task).then(() => {
-      //todo update the local task state
+      //todo: update task in the local state taht was updated
     });
   };
 

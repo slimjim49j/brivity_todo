@@ -2,8 +2,13 @@ import React, { useState, useContext } from 'react'
 import TaskContext from '../contexts/Task'
 
 function TaskList() {
+  const emptyTask = {
+    category: '', 
+    name: '', 
+    completed: false
+  }
   const [newTask, setNewTask] = useState(false);
-  const [task, setTask] = useState({category: '', name: '', completed: false})
+  const [task, setTask] = useState(emptyTask)
   const { tasks, addTask, updateTask } = useContext(TaskContext);
 
   const updateCompleted = task => {
@@ -16,12 +21,12 @@ function TaskList() {
   };
 
   const cancelTask = () => {
-    //todo reset the task state and hide the form
+    //todo: reset the task state and hide the form
   };
 
   const handleChange = e => {
     const { name, value } = e.target;
-    //todo update the task state with these variables
+    //todo: update the task state with these variables
   };
 
   return (
