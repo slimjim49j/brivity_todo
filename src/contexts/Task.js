@@ -22,7 +22,7 @@ export const TaskProvider = ({ children }) => {
 
   async function updateTask(task) {
     await fbUpdateTask(task).then(() => {
-      //todo: update task in the local state taht was updated
+      //todo: update the task in the local state that was completed/uncompleted
     });
   };
 
