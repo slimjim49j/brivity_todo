@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { TaskProvider } from './contexts/Task';
+import { AuthProvider } from './contexts/Auth';
 
 ReactDOM.render(
   <React.StrictMode>
-    <TaskProvider>
-      <App />
-    </TaskProvider>
+    <AuthProvider>
+      <TaskProvider>
+        <App />
+      </TaskProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

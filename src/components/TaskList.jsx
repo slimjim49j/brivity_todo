@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react'
-import TaskContext from '../contexts/Task'
+import React, { useState, useContext, useEffect } from 'react'
+import TaskContext from '../contexts/Task';
+import AuthContext from '../contexts/Auth';
 
 function TaskList() {
   const emptyTask = {
@@ -9,7 +10,12 @@ function TaskList() {
   }
   const [newTask, setNewTask] = useState(false);
   const [task, setTask] = useState(emptyTask)
-  const { tasks, addTask, updateTask } = useContext(TaskContext);
+  const { tasks, addTask, updateTask, getTasks } = useContext(TaskContext);
+  const { user } = useContext(AuthContext)
+
+  useEffect(() => {
+    getTasks();
+  },[user])
 
   const updateCompleted = task => {
     task.task.completed = !task.task.completed;
