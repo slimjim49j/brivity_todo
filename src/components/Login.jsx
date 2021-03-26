@@ -10,7 +10,7 @@ const Login = () => {
     <div>
       <h3>{createAccount ? "Create Account" : "Login"}</h3>
       <input placeholder="Email" type="text" onChange={(e) => setEmail(e.target.value)} />
-      <input placeholder="password" type="text" onChange={(e) => setPassword(e.target.value)}/>
+      <input placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)}/>
       <button onClick={() => login(email, password)}>Login</button>
       <button onClick={() => createAccount(email, password)}>Create Account</button>
     </div>

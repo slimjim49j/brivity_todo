@@ -2,7 +2,7 @@ import firebase from 'firebase';
 require("firebase/firestore");
 
 var firebaseConfig = {
-  apiKey: "",
+  apiKey: "AIzaSyCvxnlVq0DmWu9Z3rHdwH5kNSxwzfv3nMM",
   authDomain: "blueroof-todo.firebaseapp.com",
   projectId: "blueroof-todo",
   storageBucket: "blueroof-todo.appspot.com",
@@ -44,6 +44,20 @@ export const fbLogin = async (email, password) => {
   })
 }
 
+export const fbLogout = async () => {
+  return new Promise(function(resolve, reject){
+    firebase.auth().signOut()
+    .then(() => {
+      resolve();
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ..
+    });
+  })
+}
+
 export const fbAddTask = async (task) => {
   return new Promise(function (resolve, reject) {
     db.collection("tasks").add(task).then(docRef => {
@@ -60,9 +74,9 @@ export const fbUpdateTask = async (task) => {
   });
 };
 
-export const fbGetTasks = async () => {
+export const fbGetTasks = async (userID) => {
   return new Promise(function (resolve, reject) {
-    db.collection("tasks").get().then(querySnapshot => {
+    db.collection("tasks").where('uid', '==', userID).get().then(querySnapshot => {
      let collection = []
       querySnapshot.forEach((doc) => {
           collection.push({id: doc.id, task: doc.data()});

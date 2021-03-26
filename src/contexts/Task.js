@@ -8,8 +8,8 @@ export default TaskContext;
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
-  async function getTasks() {
-    await fbGetTasks().then(response => {
+  async function getTasks(userID) {
+    await fbGetTasks(userID).then(response => {
       setTasks(response);
     });
   };

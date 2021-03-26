@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import {fbLogin, fbCreateAccount} from '../services/firebase';
+import {fbLogin, fbCreateAccount, fbLogout} from '../services/firebase';
 
 const AuthContext = createContext();
 export default AuthContext;
@@ -27,6 +27,13 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('@user', JSON.stringify(user));
     })
   };
+  
+  const logout = () => {
+    fbLogout().then(() => {
+      setUser(null);
+      localStorage.removeItem('@user');
+    })
+  };
 
   return (
     <AuthContext.Provider
@@ -34,7 +41,8 @@ export const AuthProvider = ({ children }) => {
         user: user,
         login,
         createAccount,
-        checkForUser
+        checkForUser,
+        logout
       }}
     >
       {children}

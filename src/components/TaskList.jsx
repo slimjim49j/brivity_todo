@@ -3,18 +3,19 @@ import TaskContext from '../contexts/Task';
 import AuthContext from '../contexts/Auth';
 
 function TaskList() {
+  const { user, logout } = useContext(AuthContext)
   const emptyTask = {
     category: '', 
     name: '', 
-    completed: false
+    completed: false,
+    uid: user.uid
   }
   const [newTask, setNewTask] = useState(false);
   const [task, setTask] = useState(emptyTask)
   const { tasks, addTask, updateTask, getTasks } = useContext(TaskContext);
-  const { user } = useContext(AuthContext)
 
   useEffect(() => {
-    getTasks();
+    getTasks(user.uid);
   },[user])
 
   const updateCompleted = task => {
@@ -32,7 +33,7 @@ function TaskList() {
 
   const handleChange = e => {
     const { name, value } = e.target;
-    //todo: update the task state with these variables
+    // todo: update the task state with these variables
   };
 
   return (
@@ -74,6 +75,7 @@ function TaskList() {
         }
       </tbody>
       </table>
+      <button onClick={logout}>Logout</button>
     </div>
   );
 }
