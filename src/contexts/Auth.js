@@ -6,6 +6,7 @@ export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  console.log("user", user);
 
   const checkForUser = () => {
     let localUser = localStorage.getItem('@user');

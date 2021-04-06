@@ -1,6 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react'
 import TaskContext from '../contexts/Task';
 import AuthContext from '../contexts/Auth';
+import { Table, Checkbox, Input, Form, Button, Card } from 'antd';
+
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
+
+const { Column } = Table;
+const { Item } = Form;
 
 function TaskList() {
   const { user, logout } = useContext(AuthContext)
@@ -12,7 +25,7 @@ function TaskList() {
   }
   const [newTask, setNewTask] = useState(false);
   const [task, setTask] = useState(emptyTask)
-  const { tasks, addTask, updateTask, getTasks } = useContext(TaskContext);
+  const { tasks, addTask, updateTask, getTasks } = useContext(TaskContext);  
 
   useEffect(() => {
     getTasks(user.uid);
@@ -29,53 +42,78 @@ function TaskList() {
 
   const cancelTask = () => {
     //todo: reset the task state and hide the form
+    setTask(emptyTask);
+    setNewTask(false);
   };
 
   const handleChange = e => {
     const { name, value } = e.target;
+    console.log(name, value);
     // todo: update the task state with these variables
+    setTask(task => ({...task, [name]: value}));
   };
 
   return (
     <div className="TaskList">
-      <button onClick={() => setNewTask(!newTask)}>+</button>
-      <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Name</th>
-          <th>Completed</th>
-        </tr>
-      </thead>
-      <tbody>
+      <Card
+        title="My Tasks"
+        extra={<Button onClick={() => setNewTask(!newTask)}>+</Button>}
+      >
         {
           newTask && (
-            <tr>
-              <td>
-                <input type="text" value={task.category} onChange={handleChange} name="category"/>
-              </td>
-              <td>
-                <input type="text" value={task.name} onChange={handleChange} name="name"/>
-              </td>
-              <td>
-                <button disabled={task.name.length === 0 || task.category.length === 0 ? true : false} onClick={saveTask}>save</button> <br/>
-                <button onClick={cancelTask}>cancel</button>
-              </td>
-            </tr>
+            <Form name="basic" {...layout} onFinish={saveTask}>
+              <Item
+                label="Category"
+                name="category"
+                rules={[{ required: true, message: "Please input a category!" }]}
+              >
+                <Input name="category" onChange={(e) => handleChange(e)} value={task.category} />
+              </Item>
+              <Item
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: "Please input a name!" }]}
+              >
+                <Input name="name" onChange={(e) => handleChange(e)} value={task.name} />
+              </Item>
+              <Item {...tailLayout}>
+                <Button type="primary"
+                  disabled={ !(task.name.length && task.category.length) }
+                  htmlType="submit"
+                >
+                  Save
+              </Button>
+
+                <Button type="button"
+                  onClick={cancelTask}
+                >
+                  Cancel
+              </Button>
+              </Item>
+            </Form>
           )
         }
-        {
-          tasks.map(task => (
-            <tr key={task.id}>
-              <td>{task.task.category}</td>
-              <td>{task.task.name}</td>
-              <td><input type="checkbox" checked={task.task.completed} onChange={() => updateCompleted(task)}/></td>
-            </tr>
-          ))
-        }
-      </tbody>
-      </table>
-      <button onClick={logout}>Logout</button>
+      </Card>
+
+      <Table dataSource={tasks}>
+        <Column title="Category"
+          dataIndex={["task", "category"]}
+          key="category"
+        />
+        <Column title="Name"
+          dataIndex={["task", "name"]}
+          key="name"
+        />
+        <Column title="Completed"
+          dataIndex={["task", "completed"]}
+          key="completed"
+          render={(_, task) => {
+            return <Checkbox onChange={() => updateCompleted(task) } checked={task.task.completed} />
+          }}
+        />
+      </Table>
+      
+      <Button onClick={logout}>Logout</Button>
     </div>
   );
 }
